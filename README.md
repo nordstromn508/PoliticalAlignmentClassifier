@@ -1,2 +1,2 @@
 # PoliticalAlignmentClassifier
-Classify Political Allignment based on text data
+Classify Political Alignment based on text data
