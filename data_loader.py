@@ -8,17 +8,24 @@ data_loader.py
 import pandas as pd
 
 
-def __normalize_dataframe__(df: pd.DataFrame):
+def _parse_site_(row):
+    """
+    Given a row from a pandas dataframe, parse main website domain from URL column which contains a single URL
+    :param row: a single row of a data frame
+    :return:main site extracted from url field of row
+    """
+    return row['URL'].split('/')[2]
+
+
+def _normalize_dataframe_(df: pd.DataFrame):
     """
     Normalizes Dataset DataFrame
     :param df: raw, read DataFrame from poorly formatted Excel file
     :return: Normalized DataFrame Object
     """
-
-    col_names = [x[2:-4].replace('\"', "") for x in df.iloc[1, :9:2]]
-    df = df.drop([x for x in range(11)[::2]], axis=1)
-    df.columns = col_names
-
+    bad_cols = ['Score', 'Id', 'Subreddit', 'Num of Comments', 'Date Created']
+    df = df.drop(bad_cols, axis=1)
+    df['Site'] = df.apply(lambda row: _parse_site_(row), axis=1)
     return df
 
 
@@ -29,7 +36,6 @@ def export_dataframe(df: pd.DataFrame, ref: str):
     :param ref: relative or full path location to save Excel file to
     :return: None
     """
-
     df.to_excel(ref, index=False, header=True)
 
 
@@ -39,5 +45,14 @@ def read_csv(ref: str):
     :param ref: relative or full path to Excel file to read in
     :return: pandas DataFrame read into memory from an Excel file
     """
-
     return pd.read_csv(ref)
+
+
+def normalize_read_csv(ref: str):
+    """
+    chaining normalize and read_csv functions
+    :param ref: reference to file to read
+    :return:read, normalized dataframe
+    """
+    return _normalize_dataframe_(read_csv(ref))
+
