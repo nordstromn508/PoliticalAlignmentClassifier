@@ -14,7 +14,13 @@ def _parse_site_(row):
     :param row: a single row of a data frame
     :return:main site extracted from url field of row
     """
-    return row['URL'].split('/')[2]
+    site = row['URL'].split('/')[2]
+
+    bad_seg = ['www.', '.com', '.org', 'i.', 'v.']
+    for seg in bad_seg:
+        site = site.replace(seg, '')
+
+    return site.replace('.', '')
 
 
 def _normalize_dataframe_(df: pd.DataFrame):
@@ -39,6 +45,19 @@ def export_dataframe(df: pd.DataFrame, ref: str):
     df.to_excel(ref, index=False, header=True)
 
 
+def export_list_to_text(lines, name: str):
+    """
+    exports a list of items (string) to a file
+    :param lines: list of lines to write to file
+    :param name: name of file to write to
+    :return: error code, 0 if no error
+    """
+    with open(name, 'w') as f:
+        for item in lines:
+            f.write("%s\n" % item)
+    return 0
+
+
 def read_csv(ref: str):
     """
     Reads a single Excel file into memory
@@ -55,4 +74,3 @@ def normalize_read_csv(ref: str):
     :return:read, normalized dataframe
     """
     return _normalize_dataframe_(read_csv(ref))
-

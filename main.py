@@ -7,11 +7,12 @@ main.py
 
 import data_loader
 
-DATA_FILE = "Reddit_posts.csv"
+INPUT_FILE = "Reddit_posts.csv"
 
 
 def main():
-    df = data_loader.normalize_read_csv(DATA_FILE)
+    df = data_loader.normalize_read_csv(INPUT_FILE)
+    print(df.columns)
     print(df)
 
 
