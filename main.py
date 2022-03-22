@@ -2,7 +2,7 @@
 main.py
     main thread of execution
 
-    @author Nicholas Nordstrom
+    @author Nicholas Nordstrom and Jason Zou
 """
 
 import data_loader
