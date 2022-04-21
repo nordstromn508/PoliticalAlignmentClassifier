@@ -6,6 +6,7 @@ main.py
 """
 
 import data_loader
+from model import random_forests
 
 INPUT_FILE = "Reddit_posts.csv"
 
@@ -13,7 +14,10 @@ INPUT_FILE = "Reddit_posts.csv"
 def main():
     df = data_loader.normalize_read_csv(INPUT_FILE)
     print(df.columns)
-    print(df)
+    y = df['Political Lean']
+    df.pop('Political Lean')
+    x = df['Title','URL','Text','Site']
+    random_forests(x,y)
 
 
 if __name__ == "__main__":
