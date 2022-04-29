@@ -2,12 +2,13 @@
 main.py
     main thread of execution
 
-    @author Nicholas Nordstrom
+    @author Nicholas Nordstrom and Jason Zou
 """
 import sys
 from datetime import datetime
 
 import data_loader
+from model import random_forests
 
 INPUT_FILE = "Reddit_posts.csv"
 PROCESSED_FILE = "data.xlsx"
@@ -41,6 +42,10 @@ def main():
     print("df_bow_vec_title Data:\n", df_bow_vec_title)
     print("df_bow_vec_text Data:\n", df_bow_vec_text)
 
+    y = df['Political Lean']
+    df.pop('Political Lean')
+    x = df['Title','URL','Text','Site']
+    random_forests(x,y)
 
 
 if __name__ == "__main__":
