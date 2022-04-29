@@ -5,7 +5,10 @@ data_loader.py
     @author: Nicholas Nordstrom
 """
 import nltk
+import numpy as np
 import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -15,6 +18,7 @@ nltk.download('omw-1.4')
 bad_cols = ['Score', 'Id', 'Subreddit', 'Num of Comments', 'Date Created']
 bad_seg = ['www.', '.com', '.org', 'i.', 'v.']
 preprocess_cols = ['Text', 'Title']
+MAX_FEATURES = 1000
 
 stopwords = nltk.corpus.stopwords.words('english')
 lemmatizer = nltk.stem.WordNetLemmatizer()
@@ -52,11 +56,30 @@ def _lemmatize_(row):
     :return: lemmatized, tokenized, row of the pandas dataframe
     """
     for col in preprocess_cols:
-        row['Tokenized ' + col] = [lemmatizer.lemmatize(token.lower()) for token in row['Tokenized ' + col] if token not in stopwords]
+        row['Tokenized ' + col] = [lemmatizer.lemmatize(token.lower()) for token in row['Tokenized ' + col] if
+                                   token not in stopwords]
     return row
 
 
-def _normalize_dataframe_(df: pd.DataFrame):
+def _untokenize_(row):
+    """
+    untokenizes a tokenized text
+    :param row: tokenized text from a single document
+    :return: untokenized text
+    """
+    return ' '.join(row)
+
+
+def _stem_(row):
+    """
+    TODO: Implement stemming
+    :param row:
+    :return:
+    """
+    pass
+
+
+def _process_dataframe_(df: pd.DataFrame):
     """
     Normalizes Dataset DataFrame
     :param df: raw, read DataFrame from poorly formatted Excel file
@@ -74,7 +97,30 @@ def _normalize_dataframe_(df: pd.DataFrame):
 
     # Feature extraction: Domain website
     df['Site'] = df.apply(lambda row: _parse_site_(row), axis=1)
-    return df
+
+    df['Untokenized Title'] = df['Tokenized Title'].apply(lambda row: _untokenize_(row))
+    df['Untokenized Text'] = df['Tokenized Text'].apply(lambda row: _untokenize_(row))
+
+    # Feature extraction: ngram vectorize
+    df_bi_gram_vec_title = pd.DataFrame(
+        CountVectorizer(max_features=MAX_FEATURES, ngram_range=(2, 2)).fit_transform(df['Untokenized Title']).toarray())
+    df_bi_gram_vec_text = pd.DataFrame(
+        CountVectorizer(max_features=MAX_FEATURES, ngram_range=(2, 2)).fit_transform(df['Untokenized Text']).toarray())
+    df_tri_gram_vec_title = pd.DataFrame(
+        CountVectorizer(max_features=MAX_FEATURES, ngram_range=(3, 3)).fit_transform(df['Untokenized Title']).toarray())
+    df_tri_gram_vec_text = pd.DataFrame(
+        CountVectorizer(max_features=MAX_FEATURES, ngram_range=(3, 3)).fit_transform(df['Untokenized Text']).toarray())
+
+    # Feature extraction: frequency vectorize
+    df_freq_vec_title = pd.DataFrame(TfidfVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Title']).toarray())
+    df_freq_vec_text = pd.DataFrame(TfidfVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Text']).toarray())
+
+    # Fearure extraction: bag of words vectorize
+    df_bow_vec_title = pd.DataFrame(CountVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Title']).toarray())
+    df_bow_vec_text = pd.DataFrame(CountVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Text']).toarray())
+
+    return df, df_bi_gram_vec_title, df_bi_gram_vec_text, df_tri_gram_vec_title, df_tri_gram_vec_text, \
+           df_freq_vec_title, df_freq_vec_text, df_bow_vec_title, df_bow_vec_text
 
 
 def export_dataframe(df: pd.DataFrame, ref: str):
@@ -118,10 +164,10 @@ def read_excel(ref: str):
     return pd.read_excel(ref)
 
 
-def normalize_read_csv(ref: str):
+def process_read_csv(ref: str):
     """
     chaining normalize and read_csv functions
     :param ref: reference to file to read
     :return:read, normalized dataframe
     """
-    return _normalize_dataframe_(read_csv(ref))
+    return _process_dataframe_(read_csv(ref))
