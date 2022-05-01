@@ -63,4 +63,3 @@ def naive_bayes(verbose=False):
     if verbose:
         print("Creating Naive Bayes Model")
     return model
-
