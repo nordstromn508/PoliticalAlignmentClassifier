@@ -15,15 +15,16 @@ from sklearn import naive_bayes, svm
 def random_forests(x,y):
     rf = RandomForestClassifier(random_state=42)
     X_train, X_test, y_train, y_test = train_test_split(x, y, stratify=y, random_state=42)
-
-
     rf.fit(X_train,y_train)
-    print("Cross Val Score: ",cross_val_score(rf,X_train,y_train,cv=5).mean())
+    print("Cross Val Score: ",cross_val_score(rf,X_train,y_train,cv=10).mean())
     print("Train Score: ", round(rf.score(X_train,y_train),4))
-    print("Train Score: ", round(rf.score(X_test,y_test),4))
+    print("Test Score: ", round(rf.score(X_test,y_test),4))
 
 
-def dense_dropout_nn(input_dim=1000, num_ouput=2, verbose=False):
+def dense_dropout_nn(x,y,input_dim=1000, num_ouput=1, verbose=False):
+    y = y.map({'Conservative' : 0,
+                'Liberal' : 1},
+                na_action = None)
     model = models.Sequential([
         layers.Dense(12, input_dim=input_dim, activation='relu'),
         layers.Dense(8, activation='relu'),
@@ -35,10 +36,14 @@ def dense_dropout_nn(input_dim=1000, num_ouput=2, verbose=False):
     ])
 
     model.compile(
-        loss='sparse_categorical_crossentropy',
+        loss='binary_crossentropy',
         optimizer='adam',
         metrics=['accuracy']
+
     )
+    model.fit(x, y, epochs = 200, batch_size = 50)
+    _, accuracy = model.evaluate(x, y)
+    print('Accuracy: %.2f' % (accuracy * 100))
 
     if verbose:
         model.summary()

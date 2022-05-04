@@ -8,7 +8,7 @@ import sys
 from datetime import datetime
 
 import data_loader
-from model import random_forests
+from model import random_forests, dense_dropout_nn
 
 INPUT_FILE = "Reddit_posts.csv"
 PROCESSED_FILE = "data.xlsx"
@@ -44,9 +44,10 @@ def main():
 
     y = df['Political Lean']
     df.pop('Political Lean')
-    x = df['Title','URL','Text','Site']
-    random_forests(x,y)
-
+    x = df_bow_vec_title
+    #random_forests(x,y)
+    dense_dropout_nn(x,y)
+    print(df.info())
 
 if __name__ == "__main__":
     main()
