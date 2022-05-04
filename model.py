@@ -22,9 +22,9 @@ def random_forests(x,y):
 
 
 def dense_dropout_nn(x,y,input_dim=1000, num_ouput=1, verbose=False):
-    y = y.map({'Conservative' : 0,
-                'Liberal' : 1},
-                na_action = None)
+    # y = y.map({'Conservative' : 0,
+    #             'Liberal' : 1},
+    #             na_action = None)
     model = models.Sequential([
         layers.Dense(12, input_dim=input_dim, activation='relu'),
         layers.Dense(8, activation='relu'),
@@ -41,7 +41,7 @@ def dense_dropout_nn(x,y,input_dim=1000, num_ouput=1, verbose=False):
         metrics=['accuracy']
 
     )
-    model.fit(x, y, epochs = 200, batch_size = 50)
+    model.fit(x, y, epochs=50, batch_size=50)
     _, accuracy = model.evaluate(x, y)
     print('Accuracy: %.2f' % (accuracy * 100))
 
