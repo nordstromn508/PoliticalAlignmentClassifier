@@ -31,8 +31,10 @@ def main():
         print('Logging Setup Took: {0:.4f} Seconds'.format(time() - start_logging))
 
     # skip processing because its already been done and saved
+    # start_processing = time()
     # df = data_loader.process_read_csv(INPUT_FILE)
     # data_loader.export_dataframe(df, PROCESSED_FILE)
+    # print('Data Loading and Processing Took: {0:.4f} Seconds'.format(time() - start_processing))
 
     start_reading = time()
     # load saved, processed file
