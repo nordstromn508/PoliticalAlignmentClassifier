@@ -31,19 +31,19 @@ def main():
         print('Logging Setup Took: {0:.4f} Seconds'.format(time() - start_logging))
 
     # skip processing because its already been done and saved
-    # start_processing = time()
-    # df = data_loader.process_read_csv(INPUT_FILE)
+    start_processing = time()
+    df = data_loader.process_read_csv(INPUT_FILE)
     # data_loader.export_dataframe(df, PROCESSED_FILE)
-    # print('Data Loading and Processing Took: {0:.4f} Seconds'.format(time() - start_processing))
+    print('Data Loading and Processing Took: {0:.4f} Seconds'.format(time() - start_processing))
 
-    start_reading = time()
+    # start_reading = time()
     # load saved, processed file
-    df = data_loader.read_excel(PROCESSED_FILE)
+    # df = data_loader.read_excel(PROCESSED_FILE)
     print('DF Columns: ', df.columns)
     print("DF Data:\n", df)
     print("DF Unique Sites:\n", df['Site'].value_counts())
     print("DF Unique Labels:\n", df['Political Lean'].value_counts())
-    print('DF Loading Took: {0:.4f} Seconds'.format(time() - start_reading))
+    # print('DF Loading Took: {0:.4f} Seconds'.format(time() - start_reading))
 
     start_splitting = time()
     # Select columns to use as features
