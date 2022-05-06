@@ -21,7 +21,7 @@ def random_forests(x,y):
     print("Test Score: ", round(rf.score(X_test,y_test),4))
 
 
-def dense_dropout_nn(X_train,Y_train,x_test, y_test, input_dim=1000, num_ouput=1, verbose=False):
+def dense_dropout_nn(X_train,Y_train,x_test, y_test, input_dim=1000, num_ouput=1, verbose=True):
     # y = y.map({'Conservative' : 0,
     #             'Liberal' : 1},
     #             na_action = None)
@@ -29,9 +29,10 @@ def dense_dropout_nn(X_train,Y_train,x_test, y_test, input_dim=1000, num_ouput=1
         layers.Dense(12, input_dim=input_dim, activation='relu'),
         layers.Dense(8, activation='relu'),
         layers.Dense(50, activation='relu'),
-        layers.Dropout(0.1),
+        layers.Dropout(0.4),
         layers.Dense(12, activation='relu'),
         layers.Dense(50, activation='relu'),
+        layers.Dense(20,activation = 'relu'),
         layers.Dense(num_ouput, activation='sigmoid')
     ])
 
@@ -41,9 +42,11 @@ def dense_dropout_nn(X_train,Y_train,x_test, y_test, input_dim=1000, num_ouput=1
         metrics=['accuracy']
 
     )
-    model.fit(X_train, Y_train , epochs=50, batch_size=50)
+    model.fit(X_train, Y_train , epochs=300, batch_size=50)
+    _, accuracy = model.evaluate(X_train, Y_train)
+    print('Training Accuracy: %.2f' % (accuracy * 100))
     _, accuracy = model.evaluate(x_test, y_test)
-    print('Accuracy: %.2f' % (accuracy * 100))
+    print('Testing Accuracy: %.2f' % (accuracy * 100))
 
     if verbose:
         model.summary()
