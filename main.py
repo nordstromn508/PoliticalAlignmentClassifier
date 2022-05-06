@@ -58,7 +58,7 @@ def main():
 
     start_model = time()
     # random_forests(x,y)
-    dense_dropout_nn(X_train, y_train)
+    dense_dropout_nn(X_train, y_train,X_test, y_test)
     print(df.info())
     print('Model Creation, Training and Testing Took: {0:.4f} Seconds'.format(time() - start_model))
     print('Total Time Elapsed: {0:.4f} Seconds'.format(time() - start))
