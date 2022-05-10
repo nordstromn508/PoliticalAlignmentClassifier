@@ -5,7 +5,6 @@ data_loader.py
     @author: Nicholas Nordstrom
 """
 import nltk
-import multiprocessing as mp
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -105,25 +104,24 @@ def _process_dataframe_(df: pd.DataFrame):
     df['Untokenized Text'] = df['Tokenized Text'].apply(lambda row: _untokenize_(row))
 
     # Feature extraction: ngram vectorize
-    # df_bi_gram_vec_title = pd.DataFrame(
-    #     CountVectorizer(max_features=MAX_FEATURES, ngram_range=(2, 2)).fit_transform(df['Untokenized Title']).toarray(), columns=['bi_gram_vec_title_' + str(x) for x in range(MAX_FEATURES)])
-    # df_bi_gram_vec_text = pd.DataFrame(
-    #     CountVectorizer(max_features=MAX_FEATURES, ngram_range=(2, 2)).fit_transform(df['Untokenized Text']).toarray(), columns=['bi_gram_vec_text_' + str(x) for x in range(MAX_FEATURES)])
-    # df_tri_gram_vec_title = pd.DataFrame(
-    #     CountVectorizer(max_features=MAX_FEATURES, ngram_range=(3, 3)).fit_transform(df['Untokenized Title']).toarray(), columns=['tri_gram_vec_title_' + str(x) for x in range(MAX_FEATURES)])
-    # df_tri_gram_vec_text = pd.DataFrame(
-    #     CountVectorizer(max_features=MAX_FEATURES, ngram_range=(3, 3)).fit_transform(df['Untokenized Text']).toarray(), columns=['tri_gram_vec_text_' + str(x) for x in range(MAX_FEATURES)])
+    df_bi_gram_vec_title = pd.DataFrame(
+        CountVectorizer(max_features=MAX_FEATURES, ngram_range=(2, 2)).fit_transform(df['Untokenized Title']).toarray(), columns=['bi_gram_vec_title_' + str(x) for x in range(MAX_FEATURES)])
+    df_bi_gram_vec_text = pd.DataFrame(
+        CountVectorizer(max_features=MAX_FEATURES, ngram_range=(2, 2)).fit_transform(df['Untokenized Text']).toarray(), columns=['bi_gram_vec_text_' + str(x) for x in range(MAX_FEATURES)])
+    df_tri_gram_vec_title = pd.DataFrame(
+        CountVectorizer(max_features=MAX_FEATURES, ngram_range=(3, 3)).fit_transform(df['Untokenized Title']).toarray(), columns=['tri_gram_vec_title_' + str(x) for x in range(MAX_FEATURES)])
+    df_tri_gram_vec_text = pd.DataFrame(
+        CountVectorizer(max_features=MAX_FEATURES, ngram_range=(3, 3)).fit_transform(df['Untokenized Text']).toarray(), columns=['tri_gram_vec_text_' + str(x) for x in range(MAX_FEATURES)])
 
     # Feature extraction: frequency vectorize
-    # df_freq_vec_title = pd.DataFrame(TfidfVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Title']).toarray(), columns=['freq_vec_title_' + str(x) for x in range(MAX_FEATURES)])
-    # df_freq_vec_text = pd.DataFrame(TfidfVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Text']).toarray(), columns=['freq_vec_text_' + str(x) for x in range(MAX_FEATURES)])
+    df_freq_vec_title = pd.DataFrame(TfidfVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Title']).toarray(), columns=['freq_vec_title_' + str(x) for x in range(MAX_FEATURES)])
+    df_freq_vec_text = pd.DataFrame(TfidfVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Text']).toarray(), columns=['freq_vec_text_' + str(x) for x in range(MAX_FEATURES)])
 
     # Fearure extraction: bag of words vectorize
     df_bow_vec_title = pd.DataFrame(CountVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Title']).toarray(), columns=['bow_vec_title_' + str(x) for x in range(MAX_FEATURES)])
     df_bow_vec_text = pd.DataFrame(CountVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Text']).toarray(), columns=['bow_vec_text_' + str(x) for x in range(MAX_FEATURES)])
 
-    # , df_tri_gram_vec_title, df_tri_gram_vec_text, df_bi_gram_vec_title, df_bi_gram_vec_text,df_freq_vec_text, df_freq_vec_title
-    df = pd.concat([df, df_bow_vec_text, df_bow_vec_title], axis=1)
+    df = pd.concat([df, df_bi_gram_vec_title, df_bi_gram_vec_text, df_tri_gram_vec_title, df_tri_gram_vec_text, df_freq_vec_text, df_freq_vec_title, df_bow_vec_text, df_bow_vec_title], axis=1)
 
     return df
 
