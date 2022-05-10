@@ -122,8 +122,8 @@ def _process_dataframe_(df: pd.DataFrame):
     df_bow_vec_title = pd.DataFrame(CountVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Title']).toarray(), columns=['bow_vec_title_' + str(x) for x in range(MAX_FEATURES)])
     df_bow_vec_text = pd.DataFrame(CountVectorizer(max_features=MAX_FEATURES).fit_transform(df['Untokenized Text']).toarray(), columns=['bow_vec_text_' + str(x) for x in range(MAX_FEATURES)])
 
-    # df_bi_gram_vec_title, df_bi_gram_vec_text, df_tri_gram_vec_title, df_tri_gram_vec_text, df_freq_vec_title, df_freq_vec_text,
-    df = pd.concat([df, df_bow_vec_title, df_bow_vec_text], axis=1)
+    # , df_tri_gram_vec_title, df_tri_gram_vec_text, df_bi_gram_vec_title, df_bi_gram_vec_text,df_freq_vec_text, df_freq_vec_title
+    df = pd.concat([df, df_bow_vec_text, df_bow_vec_title], axis=1)
 
     return df
 

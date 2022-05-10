@@ -5,11 +5,13 @@ model.py
     @author Nicholas Nordstrom and Jason Zou
 """
 import sklearn
-import tensorflow
+import tensorflow as tf
 from tensorflow.keras import models, layers
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score,train_test_split,GridSearchCV
 from sklearn import naive_bayes, svm
+from sklearn.svm import SVC
+import evaluation
 
 
 def random_forests(x,y):
@@ -54,8 +56,8 @@ def dense_dropout_nn(X_train,Y_train,x_test, y_test, input_dim=1000, num_ouput=1
     return model
 
 
-def svm(c=1.0, kernel='linear', degree=3, gamma='auto', verbose=False):
-    model = svm.SVC(C=c, kernel=kernel, degree=degree, gamma=gamma)
+def svm(X_train, y_train,X_test, y_test, c=1.0, kernel='linear', degree=3, gamma='auto', verbose=False):
+    model = SVC(C=c, kernel=kernel, degree=degree, gamma=gamma)
 
     if verbose:
         print("Creating SVM Model")
@@ -63,10 +65,25 @@ def svm(c=1.0, kernel='linear', degree=3, gamma='auto', verbose=False):
         print("kernel = {}".format(kernel))
         print("degree = {}".format(degree))
         print("gamma = {}".format(gamma))
+
+    model.fit(X_train, y_train)
+
+    # Training Dataset Tests
+    y_pred = model.predict(X_train)
+    accuracy = model.score(X_train, y_train)
+    print('Training Accuracy: %.2f' % (accuracy * 100))
+    print("Training Confusion Matrix:\n", evaluation.confusion_matrix(y_train, y_pred, display=True))
+
+    # Testing Dataset Tests
+    y_pred = model.predict(X_test)
+    accuracy = model.score(X_test, y_test)
+    print('Testing Accuracy: %.2f' % (accuracy * 100))
+    print("Testing Confusion Matrix:\n", evaluation.confusion_matrix(y_test, y_pred, display=True))
+
     return model
 
 
-def naive_bayes(verbose=False):
+def naive_bayes(X_train, y_train,X_test, y_test, verbose=False):
     model = naive_bayes.MultinomialNB()
     if verbose:
         print("Creating Naive Bayes Model")

@@ -1,0 +1,79 @@
+Log File: main 2022-05-10 02.56.06.txt
+
+Logging Setup Took: 0.0000 Seconds
+
+
+Data Loading and Processing Took: 15.3971 Seconds
+
+DF Columns:  Index(['Title', 'Political Lean', 'URL', 'Text', 'Tokenized Text',
+       'Tokenized Title', 'Site', 'Untokenized Title', 'Untokenized Text',
+       'bi_gram_vec_title_0',
+       ...
+       'bi_gram_vec_text_990', 'bi_gram_vec_text_991', 'bi_gram_vec_text_992',
+       'bi_gram_vec_text_993', 'bi_gram_vec_text_994', 'bi_gram_vec_text_995',
+       'bi_gram_vec_text_996', 'bi_gram_vec_text_997', 'bi_gram_vec_text_998',
+       'bi_gram_vec_text_999'],
+      dtype='object', length=2009)
+DF Data:
+                                                    Title  ...  bi_gram_vec_text_999
+0      No matter who someone is, how they look like, ...  ...                     0
+1        Biden speech draws 38.2 million U.S. TV viewers  ...                     0
+2                                     State of the union  ...                     0
+3                  We Should Just Give Poor People Money  ...                     0
+4                                      Do it for the Dew  ...                     0
+...                                                  ...  ...                   ...
+12849  Ron Paul’s Spirited Defense of WikiLeaks & Fre...  ...                     0
+12850  “Anarcho-capitalism, in my opinion, is a doctr...  ...                     0
+12851  Mises Wiki is a wiki project dedicated to the ...  ...                     0
+12852  Fireman Protection Monopoly - Is This Failed C...  ...                     0
+12853      Can this Wikipedia Article be Better Written?  ...                     0
+
+[12854 rows x 2009 columns]
+DF Unique Sites:
+ reddit            4185
+youtube            889
+washingtonpost     275
+nytimes            266
+cnn                210
+                  ... 
+mdailylifeau         1
+eufreep              1
+instyle              1
+worldnewsera         1
+wikmises             1
+Name: Site, Length: 1802, dtype: int64
+DF Unique Labels:
+ 1    8319
+0    4535
+Name: Political Lean, dtype: int64
+
+Data Splitting Took: 0.2231 Seconds
+
+Training Data Unique Labels:
+ 1    6652
+0    3631
+Name: Political Lean, dtype: int64
+Testing Data Unique Labels:
+ 1    1667
+0     904
+Name: Political Lean, dtype: int64
+Training Accuracy: 73.62
+Training Confusion Matrix:
+ [[0.85253456 0.14746544]
+ [0.28070371 0.71929629]]
+Testing Accuracy: 70.17
+Testing Confusion Matrix:
+ [[0.68975069 0.31024931]
+ [0.29638009 0.70361991]]
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 12854 entries, 0 to 12853
+Columns: 2009 entries, Title to bi_gram_vec_text_999
+dtypes: int64(2001), object(8)
+memory usage: 197.0+ MB
+None
+
+Model Creation, Training and Testing Took: 85.7399 Seconds
+
+
+Total Time Elapsed: 101.4141 Seconds
+
