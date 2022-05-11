@@ -4,6 +4,7 @@ model.py
 
     @author Nicholas Nordstrom and Jason Zou
 """
+
 from keras import callbacks
 from tensorflow.keras import models, layers
 from sklearn.ensemble import RandomForestClassifier
