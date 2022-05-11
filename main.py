@@ -22,6 +22,7 @@ LOGGING = True
 def main():
     start = time()
     start_logging = time()
+
     # set up logging
     if LOGGING:
         cur_date, cur_time = str(datetime.now()).split(' ')
