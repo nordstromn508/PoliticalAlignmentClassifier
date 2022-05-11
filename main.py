@@ -48,6 +48,7 @@ def main():
     # print('\nDF Loading Took: {0:.4f} Seconds\n'.format(time() - start_reading))
     filters = ['bi_gram_vec_', 'tri_gram_vec_', 'freq_vec_', 'bow_vec_']
     # filters = ['bi_gram_vec_title_', 'tri_gram_vec_title_', 'freq_vec_title_', 'bow_vec_title_']
+
     for fltr in filters:
         print("Test Results Using Filter: {}".format(fltr), '{\n\n')
         start_splitting = time()
