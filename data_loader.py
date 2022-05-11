@@ -4,6 +4,7 @@ data_loader.py
 
     @author: Nicholas Nordstrom
 """
+
 import nltk
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
@@ -18,7 +19,6 @@ bad_cols = ['Score', 'Id', 'Subreddit', 'Num of Comments', 'Date Created']
 bad_seg = ['www.', '.com', '.org', 'i.', 'v.']
 preprocess_cols = ['Text', 'Title']
 MAX_FEATURES = 1000
-
 stopwords = nltk.corpus.stopwords.words('english')
 lemmatizer = nltk.stem.WordNetLemmatizer()
 

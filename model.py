@@ -41,6 +41,7 @@ def dense_dropout_nn(X_train, Y_train, x_test, y_test, input_dim=1000, num_ouput
         metrics=['accuracy']
 
     )
+
     model.fit(X_train, Y_train, epochs=300, batch_size=50, verbose=False, callbacks=[callbacks.EarlyStopping(monitor='loss', patience=3)])
     # y_pred = model.predict(X_train)
     _, accuracy = model.evaluate(X_train, Y_train, verbose=False)
