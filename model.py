@@ -24,9 +24,6 @@ def random_forests(x,y):
 
 
 def dense_dropout_nn(X_train, Y_train, x_test, y_test, input_dim=1000, num_ouput=1, verbose=True):
-    # y = y.map({'Conservative' : 0,
-    #             'Liberal' : 1},
-    #             na_action = None)
     model = models.Sequential([
         layers.Dense(12, input_dim=input_dim, activation='relu'),
         layers.Dense(8, activation='relu'),
