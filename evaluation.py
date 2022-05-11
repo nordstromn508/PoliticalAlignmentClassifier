@@ -5,11 +5,12 @@ evaluation.py
     @author Nicholas Nordstrom
 """
 from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix as conf_mat
 from sklearn.model_selection import cross_val_score
 
 
 def confusion_matrix(y_pred, y_true, display=False):
-    cm = confusion_matrix(y_true, y_pred, normalize='true')
+    cm = conf_mat(y_true, y_pred, normalize='true')
 
     if display:
         disp = ConfusionMatrixDisplay(confusion_matrix=cm)
