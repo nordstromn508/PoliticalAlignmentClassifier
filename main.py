@@ -16,7 +16,7 @@ from model import random_forests, dense_dropout_nn
 
 INPUT_FILE = "Reddit_posts.csv"
 PROCESSED_FILE = "data.xlsx"
-LOGGING = True
+LOGGING = 1
 
 
 def main():
@@ -46,7 +46,7 @@ def main():
     print("DF Unique Sites:\n", df['Site'].value_counts())
     print("DF Unique Labels:\n", df['Political Lean'].value_counts())
     # print('\nDF Loading Took: {0:.4f} Seconds\n'.format(time() - start_reading))
-    filters = ['bi_gram_vec_', 'tri_gram_vec_', 'freq_vec_', 'bow_vec_']
+    filters = ['freq_vec_', 'bow_vec_']
     # filters = ['bi_gram_vec_title_', 'tri_gram_vec_title_', 'freq_vec_title_', 'bow_vec_title_']
 
     for fltr in filters:
@@ -58,6 +58,7 @@ def main():
         # 'tri_gram_vec_text_', 'freq_vec_title_', 'freq_vec_text_', 'bow_vec_title_', 'bow_vec_text_']
         X_mask = [col for col in df if col.startswith(fltr)]
 
+
         X_train, X_test, y_train, y_test = train_test_split(df[X_mask],
                                                         df['Political Lean'],
                                                         test_size=0.2, random_state=1)
@@ -66,10 +67,14 @@ def main():
         print("Testing Data Unique Labels:\n", y_test.value_counts())
 
         start_model = time()
-        # random_forests(x,y)
+        #random_forests(x,y)
+        print("this is the NN")
+        #model.XG_Boost(X_train, y_train, X_test, y_test)
+        print(X_train.shape)
+        print(y_train.shape)
+
         model.dense_dropout_nn(X_train, y_train, X_test, y_test, input_dim=2000)
-        model.svm(X_train, y_train,X_test, y_test)
-        model.naive_bayes(X_train, y_train,X_test, y_test)
+
         print(df.info())
         print('\nModel Creation, Training and Testing Took: {0:.4f} Seconds\n'.format(time() - start_model))
         print('\n\n}',' End Of Results Using Filter: {}'.format(fltr))

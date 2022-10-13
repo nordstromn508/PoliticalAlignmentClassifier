@@ -1,7 +1,6 @@
 """
 data_loader.py
     data loading module
-
     @author: Nicholas Nordstrom
 """
 
